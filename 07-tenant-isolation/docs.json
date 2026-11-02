@@ -1,0 +1,26 @@
+[
+  {
+    "id": "public-v1",
+    "version": "v1",
+    "tenant": "public",
+    "title": "Rotate an API key",
+    "body": "Create a replacement key and revoke the old key.",
+    "source": "https://docs.atlas.example/v1/keys"
+  },
+  {
+    "id": "north-v2",
+    "version": "v2",
+    "tenant": "north",
+    "title": "Rotate an API key",
+    "body": "Create a replacement key, update North applications, verify traffic, then revoke the old key.",
+    "source": "https://docs.atlas.example/north/v2/keys"
+  },
+  {
+    "id": "harbor-v2",
+    "version": "v2",
+    "tenant": "harbor",
+    "title": "Harbor private key guide",
+    "body": "Harbor-only integration instructions.",
+    "source": "https://docs.atlas.example/harbor/v2/keys"
+  }
+]

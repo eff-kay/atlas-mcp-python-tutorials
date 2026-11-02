@@ -1,0 +1,86 @@
+[
+  {
+    "folder": "01-smallest-server",
+    "title": "The smallest MCP server",
+    "concept": "Register and discover one read-only tool over stdio.",
+    "stage": "S0"
+  },
+  {
+    "folder": "02-versioned-search",
+    "title": "Versioned retrieval",
+    "concept": "Filter a local corpus before returning bounded source evidence.",
+    "stage": "S1"
+  },
+  {
+    "folder": "03-validation-and-errors",
+    "title": "Schemas and honest errors",
+    "concept": "Separate a valid no-match, invalid arguments, and unsupported domain input.",
+    "stage": "S1"
+  },
+  {
+    "folder": "04-streamable-http",
+    "title": "A remote-capable transport",
+    "concept": "Serve the same kind of tool over actual loopback HTTP.",
+    "stage": "S2"
+  },
+  {
+    "folder": "05-token-verification",
+    "title": "Verify a resource-bound token",
+    "concept": "Check signature, issuer, expiry, audience and required scope on HTTP requests.",
+    "stage": "S3"
+  },
+  {
+    "folder": "06-oauth-pkce",
+    "title": "Authorization code + PKCE",
+    "concept": "Discover the resource and issuer, explicitly approve a fixture consent, exchange a single-use code, and call MCP.",
+    "stage": "S3"
+  },
+  {
+    "folder": "07-tenant-isolation",
+    "title": "Authorize the object",
+    "concept": "Derive the tenant from validated token claims, not a tool argument.",
+    "stage": "S3"
+  },
+  {
+    "folder": "08-safe-publishing",
+    "title": "Publish with a revision precondition",
+    "concept": "Separate a read from an explicit write and atomically reject stale edits in SQLite.",
+    "stage": "S4"
+  },
+  {
+    "folder": "09-observability",
+    "title": "Observe outcomes without raw chats",
+    "concept": "Write allowlisted JSON events for success and a simulated dependency failure.",
+    "stage": "S5"
+  },
+  {
+    "folder": "10-durable-jobs",
+    "title": "Work that survives disconnects",
+    "concept": "Persist a queued job, run an external worker, restart the MCP server, and poll owned state.",
+    "stage": "S6"
+  },
+  {
+    "folder": "11-idempotency",
+    "title": "Recover an ambiguous write",
+    "concept": "Atomically commit a document revision and its operation outcome in SQLite.",
+    "stage": "S6"
+  },
+  {
+    "folder": "12-tenant-quotas",
+    "title": "Bound tenant consumption",
+    "concept": "Use an atomic per-tenant budget that persists across server processes.",
+    "stage": "S7"
+  },
+  {
+    "folder": "13-review-evidence",
+    "title": "Prepare reproducible review evidence",
+    "concept": "Discover actual tool metadata and execute five positive/three negative fixture scenarios.",
+    "stage": "S8"
+  },
+  {
+    "folder": "14-compatible-changes",
+    "title": "Keep old callers working",
+    "concept": "Add a new optional field while continuing to accept the old request shape.",
+    "stage": "S9"
+  }
+]

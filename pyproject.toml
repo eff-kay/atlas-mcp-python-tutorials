@@ -1,0 +1,19 @@
+[project]
+name = "atlas-mcp-python-tutorials"
+version = "0.1.0"
+description = "Runnable Python lessons that grow one MCP server from a local tool to a reviewable product."
+requires-python = ">=3.11"
+dependencies = [
+    "mcp[cli]==2.3.0",
+    "httpx>=0.28,<1",
+    "PyJWT>=2.10,<3",
+    "httpx2>=2,<3",
+]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.3",
+]

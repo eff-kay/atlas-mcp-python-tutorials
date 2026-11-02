@@ -1,0 +1,24 @@
+name: Run the lessons
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  lessons:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked --python ${{ matrix.python }}
+      - run: uv run --frozen --python ${{ matrix.python }} ruff check --select F .
+      - run: uv run --frozen --python ${{ matrix.python }} ruff format --check .
+      - run: uv run --frozen --python ${{ matrix.python }} python run_all_demos.py

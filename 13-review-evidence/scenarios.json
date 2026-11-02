@@ -1,0 +1,88 @@
+[
+  {
+    "name": "v2 search",
+    "prompt": "Atlas fixture: v2 search",
+    "tool": "search_docs",
+    "arguments": {
+      "query": "key",
+      "version": "v2"
+    },
+    "expect_error": false,
+    "expected_fragment": "public-v2"
+  },
+  {
+    "name": "v1 search",
+    "prompt": "Atlas fixture: v1 search",
+    "tool": "search_docs",
+    "arguments": {
+      "query": "key",
+      "version": "v1"
+    },
+    "expect_error": false,
+    "expected_fragment": "public-v1"
+  },
+  {
+    "name": "no match",
+    "prompt": "Atlas fixture: no match",
+    "tool": "search_docs",
+    "arguments": {
+      "query": "unicorn",
+      "version": "v2"
+    },
+    "expect_error": false,
+    "expected_fragment": "[]"
+  },
+  {
+    "name": "fetch v2",
+    "prompt": "Atlas fixture: fetch v2",
+    "tool": "get_doc",
+    "arguments": {
+      "doc_id": "public-v2"
+    },
+    "expect_error": false,
+    "expected_fragment": "v2"
+  },
+  {
+    "name": "fetch v1",
+    "prompt": "Atlas fixture: fetch v1",
+    "tool": "get_doc",
+    "arguments": {
+      "doc_id": "public-v1"
+    },
+    "expect_error": false,
+    "expected_fragment": "v1"
+  },
+  {
+    "name": "unsupported version",
+    "prompt": "Atlas fixture: unsupported version",
+    "tool": "search_docs",
+    "arguments": {
+      "query": "key",
+      "version": "v9"
+    },
+    "expect_error": true,
+    "expected_fragment": "Unsupported version"
+  },
+  {
+    "name": "unknown private document",
+    "prompt": "Atlas fixture: unknown private document",
+    "tool": "get_doc",
+    "arguments": {
+      "doc_id": "harbor-private"
+    },
+    "expect_error": true,
+    "expected_fragment": "No accessible document"
+  },
+  {
+    "name": "oversized limit",
+    "prompt": "Atlas fixture: oversized limit",
+    "tool": "search_docs",
+    "arguments": {
+      "query": "key",
+      "version": "v2",
+      "limit": 100
+    },
+    "expect_error": true,
+    "expected_fragment": "less than or equal"
+  }
+]

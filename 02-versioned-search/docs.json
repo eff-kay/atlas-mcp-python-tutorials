@@ -1,0 +1,18 @@
+[
+  {
+    "id": "public-v1",
+    "version": "v1",
+    "tenant": "public",
+    "title": "Rotate an API key",
+    "body": "Create a replacement key and revoke the old key.",
+    "source": "https://docs.atlas.example/v1/keys"
+  },
+  {
+    "id": "public-v2",
+    "version": "v2",
+    "tenant": "public",
+    "title": "Rotate an API key",
+    "body": "Create a replacement key, update applications, verify traffic, then revoke the old key.",
+    "source": "https://docs.atlas.example/v2/keys"
+  }
+]
