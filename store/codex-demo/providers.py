@@ -2,6 +2,7 @@
 
 import json
 import threading
+from telemetry import emit
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
@@ -42,6 +43,13 @@ def provider_server(kind, port):
                     status, result = 422, {"error": "Unsupported fixture input"}
             except (ValueError, TypeError, AttributeError):
                 status, result = 400, {"error": "Invalid JSON request"}
+            emit(
+                "provider.request",
+                trace=self.headers.get("X-Demo-Trace-Id"),
+                provider=kind,
+                path=self.path,
+                status=status,
+            )
             payload = json.dumps(result).encode()
             self.send_response(status)
             self.send_header("Content-Type", "application/json")

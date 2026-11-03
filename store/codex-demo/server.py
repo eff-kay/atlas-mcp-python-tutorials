@@ -8,6 +8,7 @@ from mcp.types import ToolAnnotations
 from pathlib import Path
 import httpx
 from providers import start_providers
+from telemetry import traced, TRACE
 
 STATE = Path(
     os.environ.get("TRAILSHOP_DEMO_STATE", Path.home() / ".local/state/trailshop-codex")
@@ -56,6 +57,7 @@ CREATE TABLE IF NOT EXISTS operations(customer TEXT,key TEXT,digest TEXT,result 
 
 
 @mcp.tool(title="Search store products", annotations=READ)
+@traced
 def search_products(color: str = "blue") -> dict:
     """Return one in-stock blue carry-on fixture, or an honest no-match."""
     return {
@@ -81,12 +83,15 @@ def search_products(color: str = "blue") -> dict:
         read_only_hint=False, destructive_hint=False, open_world_hint=False
     ),
 )
+@traced
 def quote_delivery(product_id: str, address_ref: str) -> dict:
     """Call local GeoRoute and ParcelQuote HTTP fixtures. Use demo-home for Maya's saved destination. Quote expires in 120 seconds; no payment."""
     if product_id != "blue-carryon":
         raise ToolError("UNKNOWN_PRODUCT")
     try:
-        with httpx.Client(trust_env=False, timeout=3) as http:
+        with httpx.Client(
+            trust_env=False, timeout=3, headers={"X-Demo-Trace-Id": TRACE.get() or ""}
+        ) as http:
             route = http.post(
                 f"http://127.0.0.1:{ADDRESS_PORT}/route",
                 json={"address_ref": address_ref},
@@ -128,6 +133,7 @@ def quote_delivery(product_id: str, address_ref: str) -> dict:
 
 
 @mcp.tool(title="Place a confirmed store order", annotations=WRITE)
+@traced
 def place_order(quote_id: str, confirmed: bool, idempotency_key: str) -> dict:
     """Create a simulated order only for this customer's quote and explicit confirmation. No real payment."""
     require_write()
@@ -184,6 +190,7 @@ def place_order(quote_id: str, confirmed: bool, idempotency_key: str) -> dict:
 
 
 @mcp.tool(title="Read an owned store order", annotations=READ)
+@traced
 def get_order(order_id: str) -> dict:
     """Read only the authenticated/local-fixture customer's order."""
     with db() as c:
@@ -196,6 +203,7 @@ def get_order(order_id: str) -> dict:
 
 
 @mcp.tool(title="Cancel an eligible store order", annotations=WRITE)
+@traced
 def cancel_order(order_id: str, confirmed: bool) -> dict:
     """Cancel an owned, not-dispatched fixture order. Cancellation is not proof of a refund."""
     require_write()

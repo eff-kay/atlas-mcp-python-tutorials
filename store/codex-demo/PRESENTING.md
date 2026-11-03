@@ -1,3 +1,5 @@
+[Start with the live connection and logs](OPENING-DEMO.md).
+
 # Show MCP in action: Maya shops through a local Codex plugin
 
 This is the **runnable local plugin**, separate from the marketplace sample packages that contain `.example` URLs. The existing plugin is `trailshop-local@docsalot-mcp-workshop`, displayed as **Trailshop Local Demo**.
@@ -59,7 +61,7 @@ Open [plugin/.codex-plugin/plugin.json](plugin/.codex-plugin/plugin.json). Point
 
 ## 2. Show how one Python function becomes a tool
 
-Open [server.py](server.py), at `search_products` (line 58 in the current source):
+Open [server.py](server.py), at `search_products`:
 
 ```python
 @mcp.tool(title="Search store products", annotations=READ)
@@ -103,7 +105,7 @@ Expected result: **$79 item + $12 delivery = $91 USD**, tax included, a **12 km*
 
 “I asked one question, but the quote function uses two providers. It resolves the saved destination through GeoRoute, then sends the route distance to ParcelQuote. It returns the small set of facts the model needs to answer me.”
 
-Open `quote_delivery` in [server.py](server.py), line 84. Point to the two actual `http.post` calls, then the compact result at line 114. [providers.py](providers.py) supplies the two separate loopback HTTP endpoints. The networking is real; the product, distance, price and delivery estimate are fictional fixtures.
+Open `quote_delivery` in [server.py](server.py). Point to the two actual `http.post` calls, then the compact result. [providers.py](providers.py) supplies the two separate loopback HTTP endpoints. The networking is real; the product, distance, price and delivery estimate are fictional fixtures.
 
 Do not stop to explain every line while the quote expires. Either show this code before asking for the quote, or ask Codex for a fresh quote before the next step.
 
@@ -138,7 +140,7 @@ Send these as separate turns:
 
 Confirm the cancellation if the host asks. Expected tools: `get_order` → `cancel_order` → `get_order`. Expected final state: **cancelled**.
 
-Open `get_order` at line 187 and `cancel_order` at line 199 in [server.py](server.py).
+Open `get_order` and `cancel_order` in [server.py](server.py).
 
 “I can continue the same conversation. The order ID links these turns to persisted state. Cancellation checks who owns the order and whether it has dispatched, then records the new state. Cancelling does not prove a refund occurred; this demo does not simulate payment reversal.”
 

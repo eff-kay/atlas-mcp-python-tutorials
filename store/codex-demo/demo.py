@@ -1,6 +1,7 @@
 """Isolated CI demo; never touches the presenter's running store/database."""
 
 import asyncio
+import json
 from pathlib import Path
 import socket
 import sys
@@ -33,6 +34,29 @@ async def main():
             },
         ) as base:
             await validate(base, transactions=True)
+            rows = [
+                json.loads(line)
+                for line in (Path(tmp) / "events.jsonl").read_text().splitlines()
+            ]
+            quote = next(
+                r
+                for r in rows
+                if r.get("tool") == "quote_delivery" and r["event"] == "tool.started"
+            )
+            providers = [
+                r
+                for r in rows
+                if r["trace"] == quote["trace"] and r["event"] == "provider.request"
+            ]
+            assert {r["provider"] for r in providers} == {"address", "delivery"}
+            assert all(r["status"] == 200 for r in providers)
+            assert any(r["event"] == "tool.failed" for r in rows)
+            assert all(
+                not {"arguments", "payload", "headers"}.intersection(r) for r in rows
+            )
+            print(
+                "PASS: quote trace links both providers; failures logged without payloads."
+            )
 
 
 if __name__ == "__main__":

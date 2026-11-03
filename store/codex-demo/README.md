@@ -4,6 +4,8 @@ This is the combined example for the talk: one persistent MCP server, five tools
 
 **For the call:** [First-person demo walkthrough, code tour and troubleshooting](PRESENTING.md).
 
+**Opening sequence:** [Folder tour, live installation and readable logs](OPENING-DEMO.md).
+
 ## Start it
 
 From the repository root:
