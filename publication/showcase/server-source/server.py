@@ -10,12 +10,13 @@ def search_products(color: str = "blue") -> dict:
     """Find a carry-on backpack by color. Prices are in USD."""
     print(f"[search_products] color={color!r}", flush=True)
     result = {
-        "products": [{"id": "backpack", "color": "blue", "price_usd": 99}]
+        "products": [{"id": "backpack", "color": "blue", "price_usd": 79}]
         if color == "blue"
         else []
     }
     print(f"[search_products] returned {result}", flush=True)
     return result
+
 
 @mcp.tool()
 def quote_delivery(product_id: str) -> dict:

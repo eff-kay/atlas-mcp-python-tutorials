@@ -272,7 +272,7 @@ Exactly two tools: search_products(color) and quote_delivery(product_id). No ord
     shutil.copy2(ROOT.parent / "LICENSE", OUT / "LICENSE")
     (OUT / "server-source").mkdir()
     shutil.copy2(
-        ROOT.parent / "store/simple-demo/server.py", OUT / "server-source/server.py"
+        ROOT / "simple-showcase-inputs/server.py", OUT / "server-source/server.py"
     )
     verify(om, cm, auth)
     archive(oa, OUT / "trailshop-chatgpt.EXAMPLE.zip")

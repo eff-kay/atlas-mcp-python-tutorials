@@ -1,6 +1,7 @@
 {
   "captured_at": "2026-11-03T23:02:46.090599+00:00",
   "source": "store/simple-demo/server.py",
-  "server_sha256": "e4f19c903b4ecbbca1ff653ebdd7089393dbb1cb33bab1d40fdf8de0bbb4a232",
-  "scope": "Synchronous HTTP checks of the two-function fixture. No LLM conversation or marketplace validation. Unsupported-purchase scenario is inventory-only; model behavior must be recorded separately."
+  "server_sha256": "dc0728ce204a48920c07aeb2fb3e9b019b01b9e3ff57033872285237aee08eb3",
+  "scope": "Synchronous HTTP checks of the two-function fixture. No LLM conversation or marketplace validation. Unsupported-purchase scenario is inventory-only; model behavior must be recorded separately. The source snapshot is pinned to the committed $79 fixture; later un-restarted working-copy price edits are not included.",
+  "source_revision": "f2da660"
 }
