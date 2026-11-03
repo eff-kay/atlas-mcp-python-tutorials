@@ -2,6 +2,14 @@
 
 These are **inspectable sample packages for the same TrailShop ecommerce example**. They use a fictional `.example` endpoint and are named `EXAMPLE.zip` deliberately. They are not deployed integrations, approved listings or upload-ready production releases.
 
+## Presentation showcase
+
+Open [the sample submission showcase](showcase/index.html) for a side-by-side file viewer. [Download the complete presenter kit](showcase/trailshop-submission-showcase.EXAMPLE.zip), or read [DIFFERENCES.md](showcase/DIFFERENCES.md) and [the three-minute walkthrough](showcase/PRESENTING.md). It compares ChatGPT ZIP, Claude GitHub plugin and Claude URL connector routes, with captured fixture evidence and an explicit replacement checklist.
+
+Rebuild the showcase with `uv run python publication/build_showcase.py`. The captured inputs under `showcase-inputs/` are dated local fixture outputs; the builder does not run or submit a server.
+
+## Other ecosystem profiles
+
 Build and inspect them:
 
 ```sh

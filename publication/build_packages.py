@@ -171,7 +171,9 @@ def build(config, example=True, out=None):
                 "commerce": True,
                 "commerce_description": "Physical-goods store example; checkout routing and eligibility must be verified for the actual host.",
             },
-            "release_notes": "Initial store workflow: catalog, delivery, confirmed order and eligible cancellation.",
+            "publication": {
+                "release_notes": "Initial store workflow: catalog, delivery, confirmed order and eligible cancellation."
+            },
         }
     }
     omcp = copy.deepcopy(remote)

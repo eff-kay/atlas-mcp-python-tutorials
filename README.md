@@ -129,3 +129,7 @@ GitHub Actions runs the same demos on Python 3.11 and 3.12. The dependency lock 
 - [Official references and version notes](REFERENCES.md)
 
 Built by Faizan Khan, founder of Docsalot. Atlas and its users are fictional teaching examples. MIT licensed.
+
+## Submission package to show during the talk
+
+[Browse the three-route showcase](publication/showcase/index.html), [compare the differences](publication/showcase/DIFFERENCES.md), or [download the presenter kit](publication/showcase/trailshop-submission-showcase.EXAMPLE.zip). ChatGPT ZIP and Claude plugin-folder exports are separate; the Claude connector worksheet is a portal checklist. Fictional endpoints are explicit.

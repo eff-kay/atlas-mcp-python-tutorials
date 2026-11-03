@@ -23,3 +23,4 @@ jobs:
       - run: uv run --frozen --python ${{ matrix.python }} ruff format --check .
       - run: uv run --frozen --python ${{ matrix.python }} python run_all_demos.py
       - run: uv run --frozen --python ${{ matrix.python }} python publication/build_packages.py
+      - run: uv run --frozen --python ${{ matrix.python }} python publication/build_showcase.py
