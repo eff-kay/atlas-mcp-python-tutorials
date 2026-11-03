@@ -13,7 +13,7 @@ from pathlib import Path
 
 import jsonschema
 
-from build_packages import ROOT, build, cases
+from build_packages import ROOT, build
 
 OUT = ROOT / "showcase"
 ASSETS = ROOT / "showcase-assets"
@@ -55,9 +55,9 @@ DIFFERENCES = [
     ],
     [
         "Sign-in configuration",
-        "OpenAI auth extension declares OAuth client/scopes; secrets in portal",
-        "Remote connector handles account sign-in; no secret in .mcp.json",
-        "Configure OAuth for user-account access in portal",
+        "OpenAI auth extension: type none for this public fixture",
+        "No authentication for the referenced public fixture",
+        "Choose No authentication for this public fixture",
     ],
     [
         "Review evidence",
@@ -79,9 +79,9 @@ DIFFERENCES = [
     ],
     [
         "What this sample lacks",
-        "Real endpoint, publisher setup, OAuth, recording and review",
+        "Real stable endpoint, publisher setup, recording and review",
         "Real connected service, production policies and directory checks",
-        "Live URL, real auth and portal submission",
+        "Live stable URL, listing and portal submission",
     ],
 ]
 
@@ -106,6 +106,10 @@ def archive(folder, dest, prefix=""):
                 z.writestr(info, f.read_bytes())
 
 
+def simple_cases():
+    return json.loads((ROOT / "simple-showcase-inputs/scenarios.json").read_text())
+
+
 def main():
     # Only remove this generator's output; curated inputs and old profiles remain.
     if OUT.exists():
@@ -119,153 +123,115 @@ def main():
     cl = OUT / "claude-plugin-repo"
     om = json.loads((oa / "plugin.json").read_text())
     auth = json.loads((oa / "mcp.json").read_text())
-    auth["mcpServers"]["trailshop"]["extensions"]["com.openai"]["auth"].update(
-        {
-            "client": {
-                "mode": "provided",
-                "clientId": "trailshop-demo-client",
-                "tokenEndpointAuthMethod": "client_secret_basic",
-            },
-            "authorizationUrl": "https://store.example/oauth/authorize",
-            "tokenUrl": "https://store.example/oauth/token",
-        }
+    auth["mcpServers"]["trailshop"]["extensions"]["com.openai"]["auth"] = {
+        "type": "none"
+    }
+    om["version"] = "0.3.0"
+    om["description"] = (
+        "Search a demo backpack and quote delivery. No purchases or accounts."
     )
+    om["keywords"] = ["shopping", "mcp", "quotes"]
+    ext = om["extensions"]["com.openai"]
+    ext["interface"].update(
+        shortDescription="Search and quote delivery",
+        longDescription=om["description"],
+        capabilities=["Search products", "Quote delivery"],
+        defaultPrompt=[
+            "Find a blue backpack and tell me the total including delivery."
+        ],
+    )
+    ext["review"].update(
+        test_cases=simple_cases(),
+        commerce=False,
+        commerce_description="Fictional catalog and pricing information only; no checkout, transactions or payments.",
+    )
+    ext["publication"]["release_notes"] = (
+        "Two synchronous tools: search_products and quote_delivery."
+    )
+    dump(oa / "plugin.json", om)
     dump(oa / "mcp.json", auth)
     cm = json.loads((cl / ".claude-plugin/plugin.json").read_text())
-    cm["displayName"] = "TrailShop Store Demo"
+    cm.update(
+        displayName="TrailShop Store Demo",
+        version="0.3.0",
+        description=om["description"],
+    )
     dump(cl / ".claude-plugin/plugin.json", cm)
-    for folder, route in [
-        (oa, "ChatGPT upload ZIP"),
-        (cl, "Claude GitHub plugin folder"),
-    ]:
+    skill = """---
+name: shop-with-trailshop
+description: Find a backpack and quote its delivery using the connected demo store.
+---
+Use search_products to find the requested color. Use the returned product ID with quote_delivery. Explain the item price, delivery cost and total in USD. Friday is a fictional estimate. Report an empty search or unknown product honestly. This server has no purchase, cancellation or account tools. Do not invent those capabilities.
+"""
+    for folder in [oa, cl]:
+        write(folder / "skills/shop-with-trailshop/SKILL.md", skill)
         write(
             folder / "README.md",
-            f"""# TrailShop Store Demo
+            """# TrailShop: two-function demo
 
-**Teaching sample: reserved .example URLs. Replace and test before submission.**
+Teaching sample with reserved .example URLs. This plugin connects to the same simple server used in the live talk. search_products finds a fictional blue backpack priced at $79; quote_delivery returns $12 shipping and a $91 total, with a fictional Friday estimate. Both functions are synchronous and print logs in their server terminal.
 
-This plugin connects a fictional store workflow: search for a blue backpack, prepare delivery pricing, review and confirm an eligible order, retrieve its status, and cancel it when permitted. Its MCP service is hosted separately. The Python workshop simulates all orders and payments; these manifests do not deploy a service or implement OAuth.
-
-Distribution route: {route}. The shared skill describes the shopping sequence; the server remains responsible for customer ownership and order-state checks. Installation does not grant permission to act on another customer's order. Review the actual host's commerce rules before enabling purchases.
-
-## Privacy and support
-
-The planned workflow uses product IDs, a destination reference and the connected shopper's order details. Real data practices, retention, providers, support and privacy/terms pages must be documented by the service owner before launch. The sample URLs are placeholders, not published policies.
-
-The bundled mark belongs to Docsalot and is used for this author's workshop. The MIT license covers example code, not trademark rights.
+The public fixture has no authentication, accounts, orders, checkout or payments. Unknown colors return no matches; unknown product IDs return an error object. The service runs separately from the plugin. Replace the placeholder endpoint, support, privacy, terms and recording URLs before a real submission. The service owner must publish accurate data-handling information. Docsalot branding belongs to its owner; the code license does not grant trademark rights.
 """,
         )
     connector = {
-        "_format": "Presenter worksheet, not an official import schema or API payload",
+        "_format": "Presenter worksheet, not an official import schema",
         "example_only": True,
         "portal": "https://claude.ai/directory/manage",
         "submission_type": "MCP connector",
-        "connection": {
-            "url": "https://store.example/mcp",
-            "users_connect_to_different_urls": False,
-        },
+        "connection": {"url": "https://store.example/mcp"},
         "listing": {
             "name": "TrailShop Store Demo",
-            "one_liner": "Find products and manage your own eligible store orders.",
+            "description": om["description"],
             "documentation_url": "https://store.example/docs",
             "privacy_url": "https://store.example/privacy",
             "support_contact": "support@store.example",
-            "icon": "../chatgpt-upload/assets/icon.png",
         },
-        "use_cases": [
-            "Find a product",
-            "Quote delivery",
-            "Review a permitted order action",
-            "Retrieve own order",
-            "Cancel an eligible order",
-        ],
         "authentication": {
-            "required": True,
-            "method": "OAuth 2.0",
-            "planned_scopes": ["store:read", "store:write"],
-            "secrets": "Enter privately in the portal; absent from this kit",
+            "required": False,
+            "method": "No authentication",
+            "reason": "Public fictional catalog and prices; no accounts or personal data",
         },
-        "data_handling": "Complete the worksheet with the actual service owner. No production assertions are made here.",
-        "reviewer_access": "Provide a populated dedicated account through secure portal fields; no credentials in this file.",
-        "verification": "Standard shared URL sample. Per-customer URLs have separate Verified requirements.",
+        "tools": ["search_products", "quote_delivery"],
         "status": "NOT SUBMITTED",
     }
     dump(OUT / "claude-connector/portal-worksheet.example.json", connector)
     write(
         OUT / "claude-connector/README.md",
-        """# Claude remote connector
-
-This folder is a presenter worksheet. It is not a Claude plugin and its JSON is not an official import format. The portal receives the HTTPS URL, listing, OAuth setup, data disclosures and reviewer instructions. For a remote server referenced by a plugin, create its connector submission as well. Default Community screening and exceptions follow the current official guide. This fixture has no live endpoint and has not been submitted.
-""",
+        "# Remote connector worksheet\n\nEnter the hosted HTTPS /mcp URL, listing and No authentication in the portal. This JSON is our worksheet, not an import format. A referenced remote server also needs a connector submission when distributing a Claude plugin.\n",
     )
-    (OUT / "review-evidence").mkdir(exist_ok=True)
+    (OUT / "review-evidence").mkdir()
     for name in ["tool-inventory.json", "store-review-results.json", "origin.json"]:
-        shutil.copy2(ROOT / "showcase-inputs" / name, OUT / "review-evidence" / name)
-    dump(OUT / "review-evidence/scenarios.json", cases())
+        shutil.copy2(
+            ROOT / "simple-showcase-inputs" / name, OUT / "review-evidence" / name
+        )
+    dump(OUT / "review-evidence/scenarios.json", simple_cases())
     write(
         OUT / "review-evidence/README.md",
-        """# What this evidence proves
+        """# Evidence scope
 
-The results were captured from store/06-review-evidence/demo.py using an isolated local SQLite fixture over stdio. Five success scenarios and three expected denials completed; origin.json records the capture and source hash. No real account, payment or production OAuth was exercised. This is not evidence of a ChatGPT or Claude conversation, an uploaded recording, portal scan, marketplace compatibility or approval.
-
-The tool inventory belongs to that specific lesson snapshot. Re-export the deployed server's inventory and rerun every case in the target app using the reviewer account before a real submission. Confirm annotation semantics against actual side effects and each host's rules; do not treat this snapshot as a reviewed tool contract. Generated IDs and expiry timestamps are historical fixture values, not reusable requests.
+Captured from the actual store/simple-demo/server.py over HTTP. Exactly two tools, no async/await in the demo source, no authentication, database or transactions. Five positive and three negative preparation scenarios refer only to search and quotation. Negative cases include empty results and an unknown product; these are business outcomes, not necessarily MCP protocol errors. The unsupported-purchase case checks that no purchase tool exists; a model refusal still requires testing in the target app. Local results do not establish target-app behavior, portal approval or a completed recording. See origin.json for the source hash.
 """,
     )
     write(
         OUT / "review-evidence/walkthrough-script.md",
-        """# Recording outline — recording still required
-
-1. Start as the reviewer with the account already populated. Show sign-in without exposing credentials.
-2. Ask for a blue carry-on backpack under $100. Show search_products and the selected product.
-3. Ask for delivery to the saved destination. Show quote_delivery, total, expiry and delivery estimate.
-4. Confirm the displayed quote. Show place_order and one authoritative result.
-5. Ask for status with get_order; then cancel the eligible order with cancel_order.
-6. Demonstrate three denials: missing confirmation, another customer's order, already-dispatched order.
-7. Explain fixture vs production checkout and show the permitted real flow for the host.
-
-The accessible recording URL in the ChatGPT manifest is a placeholder. A script is not a recording. Rerun in each actual host, with fresh IDs and a current quote. No recording is included or claimed.
-""",
+        "# Recording outline — actual recording still required\n\n1. Connect the hosted two-function server with No authentication.\n2. Ask: Find a blue backpack and tell me the total including delivery.\n3. Show search_products and quote_delivery in the terminal logs.\n4. Show $79 plus $12 equals $91 USD, with a fictional Friday estimate.\n5. Demonstrate green/no match and an unknown product ID.\n6. Explain there is no purchase tool. Record the actual target app before submitting.\n",
     )
     write(
         OUT / "review-evidence/data-handling-worksheet.md",
-        """# Data handling — fill with the service owner
-
-This is a worksheet, not a privacy policy.
-
-| Question | Complete before submission |
-|---|---|
-| What personal data is read or stored? | Identify account, destination and order fields actually used |
-| Where does it go? | Map the store, routing and courier providers and any telemetry processor |
-| What is retained, and for how long? | State actual storage, deletion and retention behavior |
-| What APIs do you own or have rights to use? | Identify first-party APIs and authorized partners |
-| What appears in logs? | Explain redaction and access control; exclude credentials |
-| How are purchases and cancellations handled? | State actual supported checkout, confirmations and refund behavior |
-| Where can users get help? | Publish real support, privacy and terms links |
-
-Keep private reviewer credentials and OAuth secrets in the platforms' secure fields. The simulated store makes no real data-retention or payment-provider promise.
-""",
+        "# Data-handling worksheet\n\nThis demo processes a color and a product ID and prints them in the local terminal. It has no user accounts, saved addresses, database or payment processing. Document actual hosted request logging, retention, support and privacy practices before release; the local fixture is not a production privacy policy.\n",
     )
     write(
         OUT / "START-HERE.md",
-        """# One store. Three submission routes.
+        """# The same two-function server, three submission routes
 
-Open index.html for a presentation-friendly comparison, or start with DIFFERENCES.md. All store URLs use the reserved .example domain. No server is deployed and no marketplace submission is made.
+Open index.html for the side-by-side viewer. chatgpt-upload/ is the exact ChatGPT ZIP content. claude-plugin-repo/ is the native GitHub plugin folder (including hidden manifests). claude-connector/ is a portal worksheet, not a plugin. review-evidence/ contains actual HTTP fixture outputs and preparation cases. See DIFFERENCES.md, PRESENTING.md and REPLACE-BEFORE-SUBMIT.md.
 
-| Folder/file | What to show |
-|---|---|
-| chatgpt-upload/ | Exact contents of the sample ChatGPT ZIP; manifests are at the ZIP root |
-| claude-plugin-repo/ | Claude plugin folder, including hidden .claude-plugin/ and .mcp.json |
-| claude-connector/ | Portal worksheet for the hosted server; not an import schema |
-| review-evidence/ | Five success cases, three denials, captured fixture outputs and recording outline |
-| DIFFERENCES.md | File, metadata, authentication, evidence and publication comparison |
-| PRESENTING.md | A short first-person walkthrough |
-| REPLACE-BEFORE-SUBMIT.md | Specific placeholders and external steps |
-| validation-report.json | What was checked locally and what remains unchecked |
+Live code: https://github.com/eff-kay/atlas-mcp-python-tutorials/tree/main/store/simple-demo
 
-The individual ChatGPT ZIP is the upload-shaped artifact. The Claude ZIP preserves its GitHub folder for inspection; the portal route is GitHub. The larger showcase ZIP is a presenter kit, not a universal marketplace upload. Enable hidden-file display when browsing the Claude folder.
+Run from that folder: uv run python server.py. Local endpoint: http://127.0.0.1:8770/mcp. For ngrok: ngrok http http://127.0.0.1:8770 --host-header=127.0.0.1:8770, then use the current HTTPS URL with /mcp. The packaged HTTPS .example URL is deliberately a placeholder; it will not connect until replaced.
 
-Code: https://github.com/eff-kay/atlas-mcp-python-tutorials/tree/main/store/codex-demo
-Offline kit: the file viewer embeds its fonts, logo and source examples. Individual ZIPs are included; the complete-kit download button links to the public site.
+Exactly two tools: search_products(color) and quote_delivery(product_id). No orders, cancellation, OAuth, database or external APIs. The packages reference the hosted server; they do not deploy it. The complete kit ZIP is a presenter artifact, not a universal marketplace upload.
 """,
     )
     table = (
@@ -274,77 +240,40 @@ Offline kit: the file viewer embeds its fonts, logo and source examples. Individ
     )
     write(
         OUT / "DIFFERENCES.md",
-        "# Same store; different submission artifacts\n\nChecked November 3, 2026. This kit chooses the Agent Plugins root format for ChatGPT; OpenAI also documents a Codex compatibility format.\n\n"
+        "# Same simple server; different packaging\n\n"
         + table
-        + """
-
-## What stays the same
-
-The store workflow, hosted MCP URL, server-side tool schemas, shared skill, customer ownership checks and order-state rules. The protocol does not require rebuilding the business service for each listing. The plugin file formats and platform review/setup requirements differ.
-
-## What belongs outside public plugin files
-
-Reviewer credentials, OAuth client secrets, production tokens, databases and customer data. Deployment, domain verification, sign-in, working privacy/support pages, actual host testing and publication happen outside the ZIP. Review material may be packaged where supported, but secrets use private portal fields.
-
-## Changes worth pointing out in the code
-
-- ChatGPT listing fields live under extensions.com.openai.interface.
-- ChatGPT review cases and recording URL live under extensions.com.openai.review.
-- ChatGPT release notes live under extensions.com.openai.publication.release_notes.
-- The chosen ChatGPT MCP entry uses streamable-http and an OpenAI auth extension; Claude uses http in .mcp.json. These are configuration dialects for the remote MCP connection, not different store APIs.
-- Claude's plugin folder is the submitted repository subfolder, not the entire workshop repository. Its remote server also needs the connector route.
-
-See SOURCES.md for official references and REPLACE-BEFORE-SUBMIT.md for the actual release work. Local checks do not establish acceptance or commerce eligibility.
-""",
+        + "\n\nBoth plugin folders share identical search-and-quote instructions and point to the same hosted MCP URL. This example uses No authentication because all data is public and fictional. Authenticated account integrations are a different example. ChatGPT review cases and recording metadata live in extensions.com.openai.review; release notes live in extensions.com.openai.publication. Claude reads its native manifest and README and takes a repository/path. A Claude connector takes the URL and portal fields. The two MCP configuration type values are wrapper dialects for the same protocol.\n",
     )
     write(
         OUT / "PRESENTING.md",
-        """# A three-minute first-person walkthrough
+        """# First-person submission walkthrough
 
-## 0:00 — One server, different distribution
+“This is the exact example we just ran: search_products and quote_delivery. It finds a $79 blue backpack and returns a $91 total with shipping. There are no orders or user accounts.”
 
-“This is still Maya's store. I haven't rebuilt the store three times. I have the same hosted MCP interface, but each directory asks me to describe and deliver it differently. The .example address makes this an inspectable teaching sample.”
+“For ChatGPT, I show the upload ZIP. plugin.json contains identity, listing and five positive/three negative review cases. mcp.json references the hosted endpoint with auth type none. The actual recording and policy URLs must replace these placeholders.”
 
-## 0:30 — Open the ChatGPT ZIP
+“For Claude, I show .claude-plugin/plugin.json and .mcp.json. The shared skill is identical. I submit this native folder through GitHub. The remote connector route instead asks for the HTTPS endpoint, No authentication and listing details.”
 
-“I'll open plugin.json. Here is the identity, the listing, and the review evidence. Notice the five positive and three negative cases. Release notes are under publication. In mcp.json, I point to the hosted server and declare the OAuth setup. The client ID is public configuration; the secret is entered privately. Uploading this ZIP doesn't deploy the server.”
+“The captured evidence exercises the two tools over HTTP. Empty results and an unknown product are negative scenarios. The no-purchase scenario checks the inventory; I still need to show the actual app refusing an unsupported purchase in my recording.”
 
-## 1:20 — Switch to Claude
-
-“Now look at the hidden .claude-plugin/plugin.json and .mcp.json files. The skill is the same. I submit a GitHub repository and plugin path, rather than this ZIP. That ZIP is just an export for us to inspect. For the hosted server, the connector route asks for the URL, sign-in and listing details.”
-
-## 2:00 — Show the evidence
-
-“These are real outputs from our fictional local fixture: successful search, quote, order, status and cancellation; plus three requests that must not succeed. This proves the lesson ran. It doesn't prove that a marketplace or production OAuth accepted it. I'd rerun the cases in the target app with the review account and record that experience.”
-
-## 2:40 — Show what must change
-
-“I replace the placeholder endpoint, policies and recording, configure real authentication, verify the publisher and permitted commerce flow, and finish the portal's checks. The package is one artifact in submission. A reviewed, live customer experience requires the service and the evidence too.”
+“The .example URL is a teaching placeholder. My working ngrok URL is for the live connection; a stable hosted endpoint and completed review material are needed for a real directory submission.”
 """,
     )
     write(
         OUT / "REPLACE-BEFORE-SUBMIT.md",
-        """# Replace before a real submission
-
-- Replace every https://store.example URL with your working service, docs, website, support, privacy, terms and reviewer-accessible recording links. Replace support@store.example. These are intentionally non-working fixtures.
-- Replace the sample OAuth client ID/endpoints/scopes with the real provider's configuration, implement and test the actual flow, and register the host's redirect URI. Enter secrets through private platform setup.
-- Verify the publishing identity, repository rights and relevant platform account permissions. Choose the real directory category from the current portal.
-- Export tool definitions from the deployed server, confirm hints match side effects, and test every operation with the reviewer account. Rerun and record target-app tests; the captured local stdio run is insufficient.
-- Complete data-handling, privacy/support pages and API ownership disclosures. Verify permitted checkout and cancellation/refund behavior separately for each platform.
-- ChatGPT: upload the individual sample-shaped plugin ZIP after replacing fixtures; complete domain/auth/scans, review details, review and publication.
-- Claude plugin: place only the native plugin folder in a clean repository/subfolder; connect GitHub with push rights, validate the selected commit, and follow the portal. The repo must be public before it goes live. Also submit the remote server as a connector.
-- Claude connector: use the portal worksheet as a checklist, not an import file. Configure the real HTTPS URL, OAuth, listing and reviewer access. Follow the actual status and any review/verification requirement.
-
-Do not upload the complete presenter-kit ZIP as a plugin. No deployment, public endpoint, live auth, completed video, private credentials, portal scan or approval is included here.
-""",
+        "# Replace before submission\n\n- Replace https://store.example/mcp in both MCP files and the connector worksheet with the actual stable HTTPS endpoint, including /mcp.\n- Replace website, support, privacy, terms, contact and recording placeholders with real accessible material.\n- Keep No authentication only for this public fictional catalog. Do not add account data without proper authorization.\n- Rerun every review case in the target app and record the experience; local HTTP checks are not an app recording.\n- Confirm tool titles/annotations against each platform’s requirements; this minimal live demo intentionally has no review-specific hints yet.\n- Complete publisher/domain checks and current portal validation. Submit only the ChatGPT plugin ZIP, or the Claude native repository folder; the complete presenter ZIP is not an upload format.\n",
     )
     write(
         OUT / "SOURCES.md",
-        "# Official references\n\nChecked November 3, 2026. These define the routes and configuration; the worksheets in this kit are our own teaching format.\n\n"
-        + "\n".join(f"- [{name}]({url})" for name, url in SOURCES.items())
+        "# Official sources\n\n"
+        + "\n".join(f"- [{k}]({v})" for k, v in SOURCES.items())
         + "\n",
     )
     shutil.copy2(ROOT.parent / "LICENSE", OUT / "LICENSE")
+    (OUT / "server-source").mkdir()
+    shutil.copy2(
+        ROOT.parent / "store/simple-demo/server.py", OUT / "server-source/server.py"
+    )
     verify(om, cm, auth)
     archive(oa, OUT / "trailshop-chatgpt.EXAMPLE.zip")
     archive(cl, OUT / "trailshop-claude-plugin.EXAMPLE.zip")
@@ -357,7 +286,7 @@ Do not upload the complete presenter-kit ZIP as a plugin. No deployment, public 
             "OpenAI known metadata/auth field placement (scoped checks, not full host schema)",
             "Claude required fields/paths, README/license and JSON structure",
             "Shared skill identical across profiles",
-            "Five positive/three negative scenario counts and captured fixture outputs",
+            "Two-tool inventory, five positive/three negative fixture preparation cases",
             "No credential fields, absolute/archive traversal paths, system junk or omitted hidden manifests",
         ],
         "fixture_execution": json.loads(
@@ -368,7 +297,7 @@ Do not upload the complete presenter-kit ZIP as a plugin. No deployment, public 
             "Claude native CLI: not installed",
             "Codex native validation: installed CLI exposes no validate command",
             "Claude portal validation/security scan",
-            "Hosted HTTPS/OAuth or target-app conversation tests",
+            "Hosted deployment or target-app conversation tests",
             "Commerce eligibility review",
         ],
         "release_ready": False,
@@ -434,7 +363,7 @@ def verify(om, cm, auth):
         OUT / "claude-plugin-repo/skills/shop-with-trailshop/SKILL.md"
     ).read_bytes()
     result = json.loads((OUT / "review-evidence/store-review-results.json").read_text())
-    assert len(result) == 8 and sum(x["expected_error"] for x in result) == 3
+    assert len(result) == 8 and sum(x["negative"] for x in result) == 3
     for folder in ["chatgpt-upload", "claude-plugin-repo"]:
         for f in (OUT / folder).rglob("*"):
             if f.is_file():

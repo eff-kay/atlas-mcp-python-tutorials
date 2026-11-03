@@ -1,0 +1,6 @@
+{
+  "captured_at": "2026-11-03T23:02:46.090599+00:00",
+  "source": "store/simple-demo/server.py",
+  "server_sha256": "e4f19c903b4ecbbca1ff653ebdd7089393dbb1cb33bab1d40fdf8de0bbb4a232",
+  "scope": "Synchronous HTTP checks of the two-function fixture. No LLM conversation or marketplace validation. Unsupported-purchase scenario is inventory-only; model behavior must be recorded separately."
+}

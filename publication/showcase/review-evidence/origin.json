@@ -1,7 +1,6 @@
 {
-  "captured_at": "2026-11-03T22:06:20.726107+00:00",
-  "source": "store/06-review-evidence/demo.py",
-  "server_sha256": "443218484fc8e6b32e1744cbb1e27065d6f5d881ea5336e972099063f693d2e1",
-  "scope": "Successful local stdio fixture run: five expected successes and three expected denials. Fictional Maya, no payments or hosted OAuth. Not a ChatGPT/Claude conversation or portal validation.",
-  "command": "uv run python store/06-review-evidence/demo.py"
+  "captured_at": "2026-11-03T23:02:46.090599+00:00",
+  "source": "store/simple-demo/server.py",
+  "server_sha256": "e4f19c903b4ecbbca1ff653ebdd7089393dbb1cb33bab1d40fdf8de0bbb4a232",
+  "scope": "Synchronous HTTP checks of the two-function fixture. No LLM conversation or marketplace validation. Unsupported-purchase scenario is inventory-only; model behavior must be recorded separately."
 }

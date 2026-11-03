@@ -1,0 +1,126 @@
+[
+  {
+    "name": "Find blue backpack",
+    "tool": "search_products",
+    "arguments": {
+      "color": "blue"
+    },
+    "actual": {
+      "products": [
+        {
+          "id": "backpack",
+          "color": "blue",
+          "price_usd": 99
+        }
+      ]
+    },
+    "negative": false,
+    "scope": "tool-call"
+  },
+  {
+    "name": "Default search",
+    "tool": "search_products",
+    "arguments": {},
+    "actual": {
+      "products": [
+        {
+          "id": "backpack",
+          "color": "blue",
+          "price_usd": 99
+        }
+      ]
+    },
+    "negative": false,
+    "scope": "tool-call"
+  },
+  {
+    "name": "Quote delivery",
+    "tool": "quote_delivery",
+    "arguments": {
+      "product_id": "backpack"
+    },
+    "actual": {
+      "shipping_usd": 12,
+      "total_usd": 91,
+      "arrival": "Friday (demo estimate)"
+    },
+    "negative": false,
+    "scope": "tool-call"
+  },
+  {
+    "name": "Find and quote",
+    "tool": "search_products",
+    "arguments": {
+      "color": "blue"
+    },
+    "actual": {
+      "search": {
+        "products": [
+          {
+            "id": "backpack",
+            "color": "blue",
+            "price_usd": 99
+          }
+        ]
+      },
+      "quote": {
+        "shipping_usd": 12,
+        "total_usd": 91,
+        "arrival": "Friday (demo estimate)"
+      }
+    },
+    "negative": false,
+    "scope": "tool-call"
+  },
+  {
+    "name": "Check the total",
+    "tool": "quote_delivery",
+    "arguments": {
+      "product_id": "backpack"
+    },
+    "actual": {
+      "shipping_usd": 12,
+      "total_usd": 91,
+      "arrival": "Friday (demo estimate)"
+    },
+    "negative": false,
+    "scope": "tool-call"
+  },
+  {
+    "name": "No green match",
+    "tool": "search_products",
+    "arguments": {
+      "color": "green"
+    },
+    "actual": {
+      "products": []
+    },
+    "negative": true,
+    "scope": "tool-call"
+  },
+  {
+    "name": "Unknown product",
+    "tool": "quote_delivery",
+    "arguments": {
+      "product_id": "unknown-product"
+    },
+    "actual": {
+      "error": "Product not found"
+    },
+    "negative": true,
+    "scope": "tool-call"
+  },
+  {
+    "name": "Unsupported purchase",
+    "tool": "inventory check",
+    "actual": {
+      "tools": [
+        "search_products",
+        "quote_delivery"
+      ],
+      "purchase_tool_present": false
+    },
+    "negative": true,
+    "scope": "inventory"
+  }
+]

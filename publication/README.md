@@ -4,7 +4,7 @@ These are **inspectable sample packages for the same TrailShop ecommerce example
 
 ## Presentation showcase
 
-Open [the sample submission showcase](showcase/index.html) for a side-by-side file viewer. [Download the complete presenter kit](showcase/trailshop-submission-showcase.EXAMPLE.zip), or read [DIFFERENCES.md](showcase/DIFFERENCES.md) and [the three-minute walkthrough](showcase/PRESENTING.md). It compares ChatGPT ZIP, Claude GitHub plugin and Claude URL connector routes, with captured fixture evidence and an explicit replacement checklist.
+Open [the sample submission showcase](showcase/index.html) for a side-by-side file viewer. [Download the complete presenter kit](showcase/trailshop-submission-showcase.EXAMPLE.zip), or read [DIFFERENCES.md](showcase/DIFFERENCES.md) and [the three-minute walkthrough](showcase/PRESENTING.md). It compares ChatGPT ZIP, Claude GitHub plugin and Claude URL connector routes, with captured HTTP evidence from store/simple-demo/server.py and an explicit replacement checklist. The current showcase has exactly two synchronous tools and No authentication; the older multi-ecosystem profiles below retain the fuller order-lifecycle example.
 
 Rebuild the showcase with `uv run python publication/build_showcase.py`. The captured inputs under `showcase-inputs/` are dated local fixture outputs; the builder does not run or submit a server.
 

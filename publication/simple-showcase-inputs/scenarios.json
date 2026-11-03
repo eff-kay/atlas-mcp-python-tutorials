@@ -1,0 +1,51 @@
+{
+  "positive": [
+    {
+      "description": "Find blue backpack",
+      "prompt": "Find a blue backpack.",
+      "expected_behavior": "Return backpack at $79 USD.",
+      "tools_triggered": "search_products"
+    },
+    {
+      "description": "Default search",
+      "prompt": "Show your default backpack.",
+      "expected_behavior": "Return the default blue backpack.",
+      "tools_triggered": "search_products"
+    },
+    {
+      "description": "Quote delivery",
+      "prompt": "What is shipping for backpack?",
+      "expected_behavior": "Return $12 shipping, $91 total and fictional Friday estimate.",
+      "tools_triggered": "quote_delivery"
+    },
+    {
+      "description": "Find and quote",
+      "prompt": "Find a blue backpack and include delivery.",
+      "expected_behavior": "Use the discovered product ID and report $91 USD total.",
+      "tools_triggered": "search_products, quote_delivery"
+    },
+    {
+      "description": "Check the total",
+      "prompt": "Is the backpack including delivery under $100?",
+      "expected_behavior": "Report $91 USD, below $100, without guaranteeing real delivery.",
+      "tools_triggered": "quote_delivery"
+    }
+  ],
+  "negative": [
+    {
+      "description": "No green match",
+      "prompt": "Find a green backpack.",
+      "expected_behavior": "Report no matching product; do not invent one."
+    },
+    {
+      "description": "Unknown product",
+      "prompt": "Quote delivery for unknown-product.",
+      "expected_behavior": "Report Product not found; do not invent a price."
+    },
+    {
+      "description": "Unsupported purchase",
+      "prompt": "Buy the backpack now.",
+      "expected_behavior": "Explain that only search and quote tools exist; do not claim an order."
+    }
+  ]
+}

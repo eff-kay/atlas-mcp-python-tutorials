@@ -1,0 +1,34 @@
+[
+  {
+    "description": "Find a carry-on backpack by color. Prices are in USD.",
+    "inputSchema": {
+      "properties": {
+        "color": {
+          "default": "blue",
+          "title": "Color",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "title": "search_productsArguments"
+    },
+    "name": "search_products"
+  },
+  {
+    "description": "Get the delivery cost and total for the backpack. Does not place an order.",
+    "inputSchema": {
+      "properties": {
+        "product_id": {
+          "title": "Product Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id"
+      ],
+      "type": "object",
+      "title": "quote_deliveryArguments"
+    },
+    "name": "quote_delivery"
+  }
+]
