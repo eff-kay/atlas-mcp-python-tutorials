@@ -7,3 +7,5 @@ output/
 .DS_Store
 
 events.jsonl
+
+publication/release.local.json

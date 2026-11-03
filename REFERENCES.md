@@ -15,3 +15,7 @@ Checked November 2, 2026. The runnable dependency lock resolves MCP Python SDK *
 - [Claude connector review checklist](https://claude.com/docs/connectors/building/review-criteria)
 
 Application choices such as SQLite operation ledgers, queue leases, quotas and revision preconditions are tutorial designs, not guarantees provided automatically by the MCP protocol. Directory requirements can change; the evidence lesson does not submit anything.
+
+## Store track and packaging
+
+The six store lessons are local fictional teaching fixtures. Provider calls are real loopback HTTP; no external geocoding, courier, payment or production identity service is contacted. The publication format sources and checked example repository are linked in [publication/SOURCES.md](publication/SOURCES.md) and [publication/README.md](publication/README.md). The original documentation track is preserved.

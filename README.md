@@ -1,6 +1,22 @@
-# Atlas MCP: runnable Python tutorials
+# Runnable MCP tutorials: ecommerce store + Atlas
 
 [![Run the lessons](https://github.com/eff-kay/atlas-mcp-python-tutorials/actions/workflows/lessons.yml/badge.svg)](https://github.com/eff-kay/atlas-mcp-python-tutorials/actions/workflows/lessons.yml)
+
+
+## Start with the ecommerce talk
+
+The current talk uses **one store**, a catalog, an address/distance provider, a delivery quote, a confirmed order and a cancellation. Start with the [six independent store lessons](store/README.md); all calls use real MCP SDK connections and local fixtures, without real transactions.
+
+```sh
+uv sync --locked --python 3.12
+uv run python store/01-catalog/demo.py
+uv run python store/02-address-and-delivery/demo.py
+uv run python store/04-cancel-order/demo.py
+```
+
+Read [marketplace package examples](publication/README.md) to inspect five ZIP layouts and platform-specific submission routes. These are labeled example packages; production endpoint/auth, real listing materials and host review remain required.
+
+The original 14 documentation tutorials below are preserved as a separate learning track. `run_all_demos.py` runs all 20 lessons.
 
 **One concept per folder. A real server, a runnable client, and a result you can inspect.**
 

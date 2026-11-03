@@ -1,0 +1,9 @@
+name: trailshop-store-demo
+repo: https://github.com/eff-kay/atlas-mcp-python-tutorials
+sha: REPLACE_WITH_REVIEWED_40_HEX_COMMIT
+subdir: publication/dist/portable
+description: Store workflow through a hosted MCP server.
+maintainer: eff-kay
+tier: community
+category: tools
+version: "0.2.0"

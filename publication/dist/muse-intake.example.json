@@ -1,0 +1,15 @@
+{
+  "product": "TrailShop Store Demo",
+  "mcp_url": "https://store.example/mcp",
+  "scope": "Catalog, quote, confirmed order and eligible cancellation; no real payments in tutorial",
+  "requires_before_submission": [
+    "business verification",
+    "data questionnaire",
+    "authorized brand assets",
+    "authentication/scopes",
+    "securely provided test account",
+    "transaction demo without real charges"
+  ],
+  "route": "https://platform.muse.ai/",
+  "zip_upload_format_verified": false
+}

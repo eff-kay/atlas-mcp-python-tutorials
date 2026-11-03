@@ -1,0 +1,11 @@
+{
+  "publisher_name": "Faizan Khan",
+  "mcp_url": "https://store.example/mcp",
+  "website_url": "https://store.example",
+  "privacy_url": "https://store.example/privacy",
+  "terms_url": "https://store.example/terms",
+  "support_url": "https://store.example/support",
+  "demo_recording_url": "https://store.example/review-walkthrough",
+  "repository_url": "https://github.com/eff-kay/atlas-mcp-python-tutorials",
+  "review_ready": false
+}

@@ -51,6 +51,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "jsonschema" },
     { name = "ruff" },
 ]
 
@@ -63,7 +64,10 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.17.3" }]
+dev = [
+    { name = "jsonschema", specifier = ">=4,<5" },
+    { name = "ruff", specifier = ">=0.17.3" },
+]
 
 [[package]]
 name = "attrs"

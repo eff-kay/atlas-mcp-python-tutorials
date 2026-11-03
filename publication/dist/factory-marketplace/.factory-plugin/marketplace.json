@@ -1,0 +1,12 @@
+{
+  "name": "trailshop-examples",
+  "owner": {
+    "name": "Faizan Khan"
+  },
+  "plugins": [
+    {
+      "name": "trailshop-store-demo",
+      "source": "./trailshop-store"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+[
+  {
+    "profile": "portable",
+    "archive": "trailshop-portable.EXAMPLE.zip",
+    "checks": "portable manifest and MCP schemas",
+    "example_only": true,
+    "portal_review_run": false,
+    "files": [
+      "LICENSE",
+      "README.md",
+      "assets/icon.png",
+      "mcp.json",
+      "plugin.json",
+      "skills/shop-with-trailshop/SKILL.md"
+    ]
+  },
+  {
+    "profile": "chatgpt",
+    "archive": "trailshop-chatgpt.EXAMPLE.zip",
+    "checks": "manifest + portable MCP base schema; documented OpenAI auth extension checked separately",
+    "example_only": true,
+    "portal_review_run": false,
+    "files": [
+      "LICENSE",
+      "README.md",
+      "assets/icon.png",
+      "mcp.json",
+      "plugin.json",
+      "skills/shop-with-trailshop/SKILL.md"
+    ]
+  },
+  {
+    "profile": "claude",
+    "archive": "trailshop-claude.EXAMPLE.zip",
+    "checks": "required native manifest fields + paths; native host CLI not executed",
+    "example_only": true,
+    "portal_review_run": false,
+    "files": [
+      ".claude-plugin/plugin.json",
+      ".mcp.json",
+      "LICENSE",
+      "README.md",
+      "assets/icon.png",
+      "skills/shop-with-trailshop/SKILL.md"
+    ]
+  },
+  {
+    "profile": "cursor",
+    "archive": "trailshop-cursor.EXAMPLE.zip",
+    "checks": "required native manifest fields + paths; native host CLI not executed",
+    "example_only": true,
+    "portal_review_run": false,
+    "files": [
+      ".cursor-plugin/plugin.json",
+      "LICENSE",
+      "README.md",
+      "assets/icon.png",
+      "mcp.json",
+      "skills/shop-with-trailshop/SKILL.md"
+    ]
+  },
+  {
+    "profile": "factory",
+    "archive": "trailshop-factory.EXAMPLE.zip",
+    "checks": "required native manifest fields + paths; native host CLI not executed",
+    "example_only": true,
+    "portal_review_run": false,
+    "files": [
+      ".factory-plugin/plugin.json",
+      "LICENSE",
+      "README.md",
+      "assets/icon.png",
+      "mcp.json",
+      "skills/shop-with-trailshop/SKILL.md"
+    ]
+  }
+]

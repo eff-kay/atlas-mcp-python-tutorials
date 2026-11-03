@@ -1,0 +1,32 @@
+[
+  {
+    "folder": "01-catalog",
+    "title": "Find the blue carry-on",
+    "concept": "Discover and call one read-only product search."
+  },
+  {
+    "folder": "02-address-and-delivery",
+    "title": "Coordinate independent providers",
+    "concept": "Resolve a fixture address/distance over HTTP, then request a delivery quote."
+  },
+  {
+    "folder": "03-place-order",
+    "title": "Place one confirmed order",
+    "concept": "Persist a quote and create an order once, with an idempotency key."
+  },
+  {
+    "folder": "04-cancel-order",
+    "title": "Cancel an eligible order",
+    "concept": "Check ownership and dispatch state; preserve the cancellation result."
+  },
+  {
+    "folder": "05-authenticated-http",
+    "title": "Verify the shopper over HTTP",
+    "concept": "Derive the customer from a verified token and enforce read/write scopes."
+  },
+  {
+    "folder": "06-review-evidence",
+    "title": "Prepare marketplace evidence",
+    "concept": "Run five positive and three negative store scenarios and export evidence."
+  }
+]
