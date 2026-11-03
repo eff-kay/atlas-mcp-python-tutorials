@@ -3,6 +3,10 @@
 [![Run the lessons](https://github.com/eff-kay/atlas-mcp-python-tutorials/actions/workflows/lessons.yml/badge.svg)](https://github.com/eff-kay/atlas-mcp-python-tutorials/actions/workflows/lessons.yml)
 
 
+## One store inside Codex
+
+For the presentation, use the [combined local Codex plugin demo](store/codex-demo/README.md). One start command runs a persistent HTTP MCP server with search, delivery quotes, simulated orders/cancellation, resources and a prompt. Codex connects directly to loopback HTTP; no public tunnel is needed.
+
 ## Start with the ecommerce talk
 
 The current talk uses **one store**, a catalog, an address/distance provider, a delivery quote, a confirmed order and a cancellation. Start with the [six independent store lessons](store/README.md); all calls use real MCP SDK connections and local fixtures, without real transactions.
@@ -16,7 +20,7 @@ uv run python store/04-cancel-order/demo.py
 
 Read [marketplace package examples](publication/README.md) to inspect five ZIP layouts and platform-specific submission routes. These are labeled example packages; production endpoint/auth, real listing materials and host review remain required.
 
-The original 14 documentation tutorials below are preserved as a separate learning track. `run_all_demos.py` runs all 20 lessons.
+The original 14 documentation tutorials below are preserved as a separate learning track. `run_all_demos.py` runs all 20 lessons plus the combined Codex demo (21 checks).
 
 **One concept per folder. A real server, a runnable client, and a result you can inspect.**
 

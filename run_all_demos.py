@@ -8,6 +8,7 @@ import time
 root = Path(__file__).resolve().parent
 lessons = sorted(p for p in root.iterdir() if p.is_dir() and p.name[:2].isdigit())
 lessons += sorted((root / "store").glob("[0-9][0-9]-*"))
+lessons.append(root / "store/codex-demo")
 failed = []
 for folder in lessons:
     print(f"\n=== {folder.relative_to(root)} ===", flush=True)

@@ -1,0 +1,18 @@
+{
+  "name": "trailshop-local",
+  "version": "1.0.0",
+  "description": "Run Maya's fictional ecommerce journey through a local HTTP MCP server.",
+  "author": {
+    "name": "Docsalot"
+  },
+  "license": "MIT",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Trailshop Local Demo",
+    "shortDescription": "Search, quote, buy and cancel in a fictional store",
+    "category": "Developer Tools",
+    "defaultPrompt": [
+      "Find Maya a blue carry-on backpack under $100 delivered by Friday. Search and quote only; ask before ordering."
+    ]
+  }
+}

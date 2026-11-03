@@ -2,6 +2,8 @@
 
 One store exposes its catalog and order system, backed by a fictional address/distance service and courier quote provider. A shopper finds a blue carry-on, reviews a $91 quote, places a simulated order and cancels it if eligible.
 
+For a single server to use from Codex during the call, start with the [combined local plugin demo](codex-demo/README.md). It includes the provider-backed quote and order lifecycle in one example.
+
 These six independent lessons match the talk; the original 14 documentation lessons remain at the repository root.
 
 | Lesson | What to run | What it proves |

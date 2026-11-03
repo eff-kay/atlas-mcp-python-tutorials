@@ -1,0 +1,20 @@
+{
+  "name": "docsalot-mcp-workshop",
+  "interface": {
+    "displayName": "Docsalot MCP Workshop"
+  },
+  "plugins": [
+    {
+      "name": "trailshop-local",
+      "source": {
+        "source": "local",
+        "path": "./store/codex-demo/plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
