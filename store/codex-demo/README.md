@@ -2,6 +2,8 @@
 
 This is the combined example for the talk: one persistent MCP server, five tools, two resources and one prompt. The quote tool makes actual HTTP calls to two separate loopback fixture endpoints. No external provider or real checkout is contacted.
 
+**For the call:** [First-person demo walkthrough, code tour and troubleshooting](PRESENTING.md).
+
 ## Start it
 
 From the repository root:
