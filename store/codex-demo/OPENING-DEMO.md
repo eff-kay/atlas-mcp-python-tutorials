@@ -1,8 +1,8 @@
-# Open the talk with the live connection
+# Open the talk: connect, search and quote only
 
 Use three panes: editor, terminal logs, and a fresh local Codex session. The plugin is currently installed; remove it yourself before rehearsal if you want to demonstrate installation from scratch. Removing the plugin does not delete orders or stop the server.
 
-## 1. Tour the folder first
+## Folder tour — after the first query
 
 Open `store/codex-demo/` and explain:
 
@@ -17,7 +17,7 @@ Open `store/codex-demo/` and explain:
 | `telemetry.py` / `watch_logs.py` | “These record and display the tool and provider events we will watch.” |
 | `demo.py` | “This runs an isolated check with temporary state and ports.” |
 
-Show the `@mcp.tool` decorator and typed arguments in `server.py`, then the two HTTP calls in `quote_delivery`. Explain the order checks before making a quote, because quotes expire in 120 seconds.
+Open with the connection and query below. Then show the `@mcp.tool` decorator and typed arguments in `search_products`, followed by the two HTTP calls in `quote_delivery`. Skip the order/cancellation code in this opening demo.
 
 ## 2. Prepare the terminals
 
@@ -74,7 +74,7 @@ This raw SDK log can include probe requests, session identifiers and auth-discov
 
 Ask Codex:
 
-> Use Trailshop Local Demo. Find a blue carry-on backpack under $100 total, delivered by Friday to demo-home. Show the quote and wait before ordering.
+> Use only the Trailshop Local Demo search_products and quote_delivery tools. Find a blue carry-on backpack under $100 total, delivered by Friday to my saved demo-home address. Show the product and delivery quote. Do not place or cancel any orders.
 
 The clean log will show this pattern; IDs/times/durations vary:
 
@@ -91,15 +91,11 @@ The clean log will show this pattern; IDs/times/durations vary:
 
 Expand Codex's tool cards for actual arguments/results. The event log deliberately omits payloads and credentials. The displayed examples above illustrate the format, not measured timings.
 
-The quote should show $79 + $12 = $91 USD, with a fictional Friday estimate. Then send:
+The quote should show **$79 + $12 = $91 USD**, with a fictional Friday estimate. **Stop the conversation here.** No purchase confirmation, placement, cancellation or order-status call is part of this opening.
 
-> Yes, place that simulated order.
+“Before explaining MCP, I have connected an AI application to a store and asked one question. The host selected two tools, and the quote tool called two providers. Now let's look at how little code exposes those capabilities.”
 
-> Cancel that simulated order.
-
-> Check its status again.
-
-Show `tool.succeeded` with `outcome=placed`, then `outcome=cancelled`. A failed attempt, such as cancelling `demo-shipped`, shows `tool.failed`; expand the tool result to explain `ALREADY_DISPATCHED`.
+Move to the folder tour above. Show only the plugin manifest/connection, `search_products`, `quote_delivery` and `providers.py`. The other tools can stay in the project without entering the presentation.
 
 Each tool invocation has its own trace ID; this is a small local demonstration logger, not full distributed tracing or production observability. All transactions are fictional and Maya's identity is fixed. Confirmation flags are not a production authorization system.
 
@@ -108,9 +104,9 @@ Each tool invocation has its own trace ID; this is a small local demonstration l
 Before the audience arrives:
 
 ```sh
-uv run python store/codex-demo/validate.py --transactions
+uv run python store/codex-demo/validate.py
 ```
 
-Expect `PASS`. If the model demo is interrupted, this same command visibly exercises discovery, provider-backed quotation, purchase/retry, cancellation and denials over the real MCP HTTP transport. It proves the server path; it does not demonstrate LLM tool selection.
+Expect `PASS`. This command exercises discovery, resources/prompt, product search and provider-backed quotation. Without --transactions it does not place or cancel an order. If the model demo is interrupted, it provides a query-only MCP transport check; it does not demonstrate LLM tool selection.
 
 For the fuller conversation and code walkthrough, see [PRESENTING.md](PRESENTING.md).
